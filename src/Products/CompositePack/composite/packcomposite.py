@@ -190,7 +190,13 @@ class PackSlot(Slot):
             current_viewlet_id = obj.getCurrentViewlet().getId()
             o2 = obj.dereference()
             icon = escape(getIconURL(o2, icon_base_url).encode('utf8'))
-            title = escape(o2.title_and_id().encode('utf8'))
+            title = o2.title_and_id()
+            
+            if isinstance(title, unicode):
+                title = escape(title.encode('utf8'))
+            else:
+                title = escape(title.decode('string_escape').decode('utf8'))
+                
             composite_tool = getToolByName(self, TOOL_ID)
             viewlets_info = composite_tool.getViewletsFor(o2)
 
